@@ -1,16 +1,16 @@
 package com.example.detector.controller;
 
 import com.example.detector.service.DetectorService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController(value = "DetectorController")
+@Api(value = "Mutant Detector Controller")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class DetectorController {
 
@@ -19,6 +19,8 @@ public class DetectorController {
     private final DetectorService detectorService;
 
     @RequestMapping(method = RequestMethod.POST, path = DETECTOR_PATH)
+    @ApiOperation(value = "Evaluate a DNA sequence and return whether it belongs to a mutant or a human.")
+    @ResponseBody
     public ResponseEntity<String> evaluateDna(
             @RequestBody String[] dna) {
 

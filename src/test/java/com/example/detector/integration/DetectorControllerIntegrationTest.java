@@ -1,4 +1,4 @@
-package com.example.detector;
+package com.example.detector.integration;
 
 import com.example.detector.controller.DetectorController;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,9 @@ import static org.hamcrest.core.Is.is;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class DetectorControllerTest {
+public class DetectorControllerIntegrationTest {
+
+    // TODO: add testcontainers
 
     @Autowired
     private DetectorController detectorController;
