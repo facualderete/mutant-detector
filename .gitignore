@@ -1,0 +1,14 @@
+# macOS files and IntelliJ project related files
+.DS_Store
+.idea
+*.iml
+
+# Compiled class file
+*.class
+
+# Maven #
+target/
+/.mvn
+/.maven
+/.repository
+.flattened-pom.xml
