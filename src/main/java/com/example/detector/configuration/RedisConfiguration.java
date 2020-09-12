@@ -11,7 +11,7 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
 
   private static final String REDIS_ENV_URL = "REDISCLOUD_URL";
   private static final String REDIS_ENV_PASSWORD = "REDISCLOUD_PASSWORD";
-  private static final String REDIS_LOCAL_URL = "redis://127.0.0.1:6379";
+  private static final String REDIS_LOCAL_URL = "redis://redis:6379"; // "redis" is the name in docker-compose
 
   @Bean
   public RedissonClient getRedissonClient() {

@@ -7,12 +7,14 @@ import com.example.detector.validator.DnaSequenceValidator;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
+@Slf4j
 public class DetectorService {
 
     private final RedisCache redisCache;
@@ -24,8 +26,10 @@ public class DetectorService {
         String hash = DigestUtils.sha256Hex(dnaSequence.toString());
 
         if (redisCache.existsData(hash)) {
+            log.info("message=\"Hash previously analyzed, returning from cache.\" hash={}", hash);
             return redisCache.readData(hash);
         } else {
+            log.info("message=\"Analyzing hash for the first time.\" hash={}", hash);
             boolean isMutant = evaluate(dnaSequence);
             redisCache.writeData(hash, isMutant);
             redisCache.incrementCount(isMutant);

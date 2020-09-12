@@ -1,6 +1,7 @@
 package com.example.detector.redis;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RAtomicLong;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor(onConstructor = @__(@Autowired))
+@Slf4j
 public class RedisCache {
 
   private static final String MUTANT_COUNT_KEY = "mutant-count";
@@ -25,11 +27,11 @@ public class RedisCache {
     return redissonClient.getAtomicLong(HUMAN_COUNT_KEY).get();
   }
 
-  public long incrementCount(boolean isMutant) {
+  public void incrementCount(boolean isMutant) {
     String countKey = isMutant ? MUTANT_COUNT_KEY : HUMAN_COUNT_KEY;
-    // TODO: log which key is being incremented
     RAtomicLong count = redissonClient.getAtomicLong(countKey);
-    return count.incrementAndGet();
+    long value = count.incrementAndGet();
+    log.info("message=\"Incremented key.\" key={} newValue={}", countKey, value);
   }
 
   public void writeData(String hash, boolean isMutant) {

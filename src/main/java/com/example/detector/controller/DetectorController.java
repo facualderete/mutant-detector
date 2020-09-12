@@ -27,7 +27,6 @@ public class DetectorController {
     @ResponseBody
     public ResponseEntity<String> evaluateDna(
             @RequestBody String[] dna) {
-
         return detectorService.isMutant(dna) ?
                 ResponseEntity.ok().body("DNA is mutant.") :
                 ResponseEntity.status(HttpStatus.FORBIDDEN).body("DNA is human.");
