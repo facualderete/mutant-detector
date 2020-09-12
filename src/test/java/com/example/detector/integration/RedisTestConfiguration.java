@@ -21,4 +21,9 @@ public class RedisTestConfiguration extends AbstractRedisConfiguration {
     return String.format("redis://%s:%s",
         System.getProperty("REDIS_TEST_HOST"), System.getProperty("REDIS_TEST_PORT"));
   }
+
+  @Override
+  protected String getRedisPassword() {
+    return null;
+  }
 }

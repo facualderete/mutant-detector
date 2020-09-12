@@ -15,6 +15,7 @@ public abstract class AbstractRedisConfiguration {
     config.useSingleServer()
         .setClientName(REDIS_CLIENT_NAME)
         .setAddress(getRedisUrl())
+        .setPassword(getRedisPassword())
         .setTimeout(REDIS_REQUEST_TIMEOUT)
         .setConnectTimeout(REDIS_CONNECTION_TIMEOUT)
         .setRetryAttempts(REDIS_RETRY_ATTEMPTS);
@@ -22,4 +23,6 @@ public abstract class AbstractRedisConfiguration {
   }
 
   protected abstract String getRedisUrl();
+
+  protected abstract String getRedisPassword();
 }
