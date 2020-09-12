@@ -2,28 +2,43 @@ package com.example.detector.service;
 
 import com.example.detector.model.DnaSequence;
 import com.example.detector.model.Point;
+import com.example.detector.redis.RedisCache;
 import com.example.detector.validator.DnaSequenceValidator;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.HashSet;
 import java.util.Set;
+import lombok.AllArgsConstructor;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class DetectorService {
 
+    private final RedisCache redisCache;
     private final DnaSequenceValidator dnaSequenceValidator;
 
     public boolean isMutant(String[] dna) {
         dnaSequenceValidator.validateDna(dna);
         DnaSequence dnaSequence = new DnaSequence(dna);
+        String hash = DigestUtils.sha256Hex(dnaSequence.toString());
+
+        if (redisCache.existsData(hash)) {
+            return redisCache.readData(hash);
+        } else {
+            boolean isMutant = evaluate(dnaSequence);
+            redisCache.writeData(hash, isMutant);
+            redisCache.incrementCount(isMutant);
+            return isMutant;
+        }
+    }
+
+    private boolean evaluate(DnaSequence dnaSequence) {
         Set<Point> visited = new HashSet<>();
         Point startingPoint = Point.builder()
-                .row(0)
-                .col(0)
-                .build();
+            .row(0)
+            .col(0)
+            .build();
 
         return evaluatePivot(dnaSequence, visited, startingPoint, 0) >= 2;
     }

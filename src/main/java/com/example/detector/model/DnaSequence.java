@@ -1,5 +1,8 @@
 package com.example.detector.model;
 
+import java.util.Arrays;
+import org.apache.logging.log4j.util.Strings;
+
 public class DnaSequence {
 
     private static final int SEQUENCE_LENGTH = 4;
@@ -114,5 +117,10 @@ public class DnaSequence {
             }
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return Strings.join(Arrays.asList(dna), ',');
     }
 }
