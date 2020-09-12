@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class RedisConfiguration extends AbstractRedisConfiguration {
 
   private static final String REDIS_ENV_URL = "REDISCLOUD_URL";
-  private static final String REDIS_ENV_PASSWORD = "REDISCLOUD_URL";
+  private static final String REDIS_ENV_PASSWORD = "REDISCLOUD_PASSWORD";
   private static final String REDIS_LOCAL_URL = "redis://127.0.0.1:6379";
 
   @Bean
