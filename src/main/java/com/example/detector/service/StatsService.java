@@ -16,9 +16,10 @@ public class StatsService {
     long mutantCount = redisCache.getCountMutantCount();
     long humanCount = redisCache.getCountHumanCount();
 
-    double ratio = 100.0;
+    double ratio = 100.0; // Avoid dividing by zero: if no humans, mutants ratio is 100%
     if (humanCount != 0L) {
-      ratio = (mutantCount * 100.0) / humanCount;
+      ratio = (mutantCount * 100.0) / humanCount; // get mutants/humans ratio
+      ratio = Math.round(ratio * 100.0) / 100.0; // round to 2 decimals
     }
 
     return Stats.builder()

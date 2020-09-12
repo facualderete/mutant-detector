@@ -35,7 +35,8 @@ public class DetectorControllerIntegrationTest {
 
     @ParameterizedTest
     @MethodSource("dnaAndExpectationProvider")
-    public void testIsMutant(String[] dna, HttpStatus expectedStatus, boolean expectedIsMutant, long expectedCount) {
+    public void testIsMutant(String[] dna, HttpStatus expectedStatus,
+                             boolean expectedIsMutant, long expectedCount, double expectedRatio) {
         ResponseEntity<String> result = detectorController.evaluateDna(dna);
         assertThat(result.getStatusCode(), is(expectedStatus));
         if (expectedIsMutant) {
@@ -47,16 +48,18 @@ public class DetectorControllerIntegrationTest {
 
     /**
      * Test that repeated requests don't increase statistics.
-     * @return
+     * @return a stream of arguments
      */
     static Stream<Arguments> dnaAndExpectationProvider() {
         return Stream.of(
-            arguments(new String[]{"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"}, HttpStatus.OK, true, 1),
-            arguments(new String[]{"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"}, HttpStatus.OK, true, 1),
-            arguments(new String[]{"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTA"}, HttpStatus.OK, true, 2),
-            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTG"}, HttpStatus.FORBIDDEN, false, 1),
-            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTG"}, HttpStatus.FORBIDDEN, false, 1),
-            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTA"}, HttpStatus.FORBIDDEN, false, 2)
+            arguments(new String[]{"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"}, HttpStatus.OK, true, 1, 100.0),
+            arguments(new String[]{"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"}, HttpStatus.OK, true, 1, 100.0),
+            arguments(new String[]{"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTA"}, HttpStatus.OK, true, 2, 200.0),
+            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTG"}, HttpStatus.FORBIDDEN, false, 1, 200.0),
+            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTG"}, HttpStatus.FORBIDDEN, false, 1, 200.0),
+            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTA"}, HttpStatus.FORBIDDEN, false, 2, 100.0),
+            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTC"}, HttpStatus.FORBIDDEN, false, 3, 66.67),
+            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGT","GCGTCA","TCACTC"}, HttpStatus.FORBIDDEN, false, 4, 50.0)
         );
     }
 }
