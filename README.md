@@ -24,7 +24,7 @@ http://localhost:8080/mutant-detector/swagger-ui/
 
 // You can also use plain cURL calls like this:
 curl -X GET "http://localhost:8080/mutant-detector/stats" -H "accept: */*"
-curl -X POST "http://localhost:8080/mutant-detector/mutant" -H "accept: */*" -H "Content-Type: application/json" -d "[ \"ATGCGA\", \"CAGTGC\", \"TTATGT\", \"AGAAGG\", \"CCCCTA\", \"TCACTG\"]"
+curl -X POST "http://localhost:8080/mutant-detector/mutant" -H "accept: */*" -H "Content-Type: application/ason" -d "[ \"ATGCGA\", \"CAGTGC\", \"TTATGT\", \"AGAAGG\", \"CCCCTA\", \"TCACTG\"]"
 ```
 - Access local Redis container using redis-cli:
 ```
@@ -69,3 +69,31 @@ This app is also ready to be deployed on any environment. You just need a Redis 
 * Evaluation results are stored using Redisson's RMap<String, Boolean>:
     * SHA256(dna) -> isMutant (true/false)
 * This way we can avoid evaluations over DNA sequences that were already evaluated in the past.
+* All database operations are executed in order O(1).
+
+# Testing and coverage
+* Testcontainers framework provides the possibility to instantiate docker containers for interaction with the app during integration tests. Used a GenericContainer instance running Redis image "redis:3.2.1".
+* Code coverage is verified by JaCoCo plugin by adding the following rule:
+```
+<rule>
+    <element>BUNDLE</element>
+    <limits>
+        <limit>
+            <counter>INSTRUCTION</counter>
+            <value>COVEREDRATIO</value>
+            <minimum>0.80</minimum>
+        </limit>
+        <limit>
+            <counter>LINE</counter>
+            <value>COVEREDRATIO</value>
+            <minimum>0.80</minimum>
+        </limit>
+        <limit>
+            <counter>CLASS</counter>
+            <value>COVEREDRATIO</value>
+            <minimum>0.80</minimum>
+        </limit>
+    </limits>
+</rule>
+```
+Which will guarantee INSTRUCTION, LINE and CLASS coverage with a minimum of 80%. See https://www.jacoco.org/jacoco/trunk/doc/counters.html for further reference.
