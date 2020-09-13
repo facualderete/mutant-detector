@@ -2,6 +2,7 @@ package com.example.detector.integration;
 
 import com.example.detector.controller.DetectorController;
 import com.example.detector.exception.InvalidDnaException;
+import com.example.detector.model.dto.DnaDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -45,7 +46,7 @@ public class DetectorControllerIntegrationTest {
     @Order(1)
     public void testInvalidDna(String[] dna) {
         Assertions.assertThrows(InvalidDnaException.class, () -> {
-            detectorController.evaluateDna(dna);
+            detectorController.evaluateDna(DnaDTO.builder().dna(dna).build());
         });
 
         // ensure that no records were persisted
@@ -58,7 +59,7 @@ public class DetectorControllerIntegrationTest {
     @Order(2)
     public void testIsMutant(String[] dna, HttpStatus expectedStatus,
                              boolean expectedIsMutant, long expectedCount, double expectedRatio) {
-        ResponseEntity<String> result = detectorController.evaluateDna(dna);
+        ResponseEntity<String> result = detectorController.evaluateDna(DnaDTO.builder().dna(dna).build());
         assertThat(result.getStatusCode(), is(expectedStatus));
         if (expectedIsMutant) {
             assertThat(detectorController.getStats().getCountMutantDna(), is(expectedCount));

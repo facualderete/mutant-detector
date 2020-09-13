@@ -1,6 +1,7 @@
 package com.example.detector.controller;
 
 import com.example.detector.model.Stats;
+import com.example.detector.model.dto.DnaDTO;
 import com.example.detector.service.DetectorService;
 import com.example.detector.service.StatsService;
 import io.swagger.annotations.Api;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController(value = "DetectorController")
 @Api(value = "Mutant Detector Controller")
@@ -26,8 +29,8 @@ public class DetectorController {
     @ApiOperation(value = "Evaluate a DNA sequence and return whether it belongs to a mutant or a human.")
     @ResponseBody
     public ResponseEntity<String> evaluateDna(
-            @RequestBody String[] dna) {
-        return detectorService.isMutant(dna) ?
+            @RequestBody @Valid DnaDTO dnaDTO) {
+        return detectorService.isMutant(dnaDTO.getDna()) ?
                 ResponseEntity.ok().body("DNA is mutant.") :
                 ResponseEntity.status(HttpStatus.FORBIDDEN).body("DNA is human.");
     }
