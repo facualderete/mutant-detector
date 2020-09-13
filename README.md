@@ -57,9 +57,8 @@ FLUSHALL
 ```
 
 ## About deployment on Heroku
-The app is deployed in a Heroku private environment that was provisioned with a Redis Cloud addon.
-You can access it on 
-https://mutant-detector-api.herokuapp.com/mutant-detector/swagger-ui/
+The app is deployed in a Heroku private environment that was provisioned with a Redis Cloud addon.  
+You can access the app on https://mutant-detector-api.herokuapp.com/mutant-detector/swagger-ui/
 
 This environment is private and you won't be able to deploy a new version without my credentials, but the steps I follow for deployment are:
 * Login
@@ -103,4 +102,5 @@ This app is also ready to be deployed on any environment. You just need a Redis 
     </limits>
 </rule>
 ```
-Which will guarantee INSTRUCTION, LINE and CLASS coverage with a minimum of 80%. See https://www.jacoco.org/jacoco/trunk/doc/counters.html for further reference.
+Which will guarantee INSTRUCTION, LINE and CLASS coverage with a minimum of 80%.  
+See https://www.jacoco.org/jacoco/trunk/doc/counters.html for further reference.
