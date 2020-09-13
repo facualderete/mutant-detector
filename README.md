@@ -37,8 +37,8 @@ curl -X POST "https://mutant-detector-api.herokuapp.com/mutant-detector/mutant" 
 ```
 redis-cli -h localhost -p 6379
 ```
-* Run commands on local Redis container:
-    * See all available keys:
+Run commands on local Redis container:
+* See all available keys:
 ```
 keys *
 ```
