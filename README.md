@@ -24,7 +24,8 @@ http://localhost:8080/mutant-detector/swagger-ui/
 
 // You can also use plain cURL calls like this:
 curl -X GET "http://localhost:8080/mutant-detector/stats" -H "accept: */*"
-curl -X POST "http://localhost:8080/mutant-detector/mutant" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"dna\": [ \"ATGCGA\", \"CAGTGC\", \"TTATGT\", \"AGAAGG\", \"CCCCTA\", \"TCACTG\" ]}"```
+curl -X POST "https://mutant-detector-api.herokuapp.com/mutant-detector/mutant" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"dna\": [ \"ATGCGA\", \"CAGTGC\", \"TTATGT\", \"AGAAGG\", \"CCCCTA\", \"TCACTG\" ]}"
+```
 - Access local Redis container using redis-cli:
 ```
 redis-cli -h localhost -p 6379
