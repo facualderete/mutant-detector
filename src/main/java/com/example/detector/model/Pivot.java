@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @EqualsAndHashCode
-public class Point {
+public class Pivot {
 
     private final int row;
     private final int col;

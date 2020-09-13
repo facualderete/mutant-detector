@@ -1,7 +1,7 @@
 package com.example.detector.service;
 
 import com.example.detector.model.DnaSequence;
-import com.example.detector.model.Point;
+import com.example.detector.model.Pivot;
 import com.example.detector.redis.RedisCache;
 import com.example.detector.validator.DnaSequenceValidator;
 import java.util.HashSet;
@@ -44,8 +44,8 @@ public class DetectorService {
      * @return
      */
     private boolean evaluate(DnaSequence dnaSequence) {
-        Set<Point> visited = new HashSet<>();
-        Point startingPoint = Point.builder()
+        Set<Pivot> visited = new HashSet<>();
+        Pivot startingPoint = Pivot.builder()
             .row(0)
             .col(0)
             .build();
@@ -69,7 +69,7 @@ public class DetectorService {
      * @param count
      * @return
      */
-    private int evaluatePivot(DnaSequence dnaSequence, Set<Point> visited, Point pivot, int count) {
+    private int evaluatePivot(DnaSequence dnaSequence, Set<Pivot> visited, Pivot pivot, int count) {
         count += dnaSequence.getSequencesOnArea(pivot);
 
         // when going right and down from multiple pivots, some might have already been visited.
@@ -81,7 +81,7 @@ public class DetectorService {
         }
 
         // explore next pivot to my right
-        Point goRight = Point.builder()
+        Pivot goRight = Pivot.builder()
                 .row(pivot.getRow())
                 .col(pivot.getCol() + 1)
                 .build();
@@ -93,7 +93,7 @@ public class DetectorService {
         }
 
         // explore next pivot below
-        Point goDown = Point.builder()
+        Pivot goDown = Pivot.builder()
                 .row(pivot.getRow() + 1)
                 .col(pivot.getCol())
                 .build();

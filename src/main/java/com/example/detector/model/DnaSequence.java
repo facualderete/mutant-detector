@@ -35,7 +35,7 @@ public class DnaSequence {
      * @param pivot the upper-left point in the next area to the right.
      * @return
      */
-    public boolean canGoRight(Point pivot) {
+    public boolean canGoRight(Pivot pivot) {
         return (pivot.getCol() + SEQUENCE_LENGTH) < size;
     }
 
@@ -46,7 +46,7 @@ public class DnaSequence {
      * @param pivot the top-left point in the next area downwards.
      * @return
      */
-    public boolean canGoDown(Point pivot) {
+    public boolean canGoDown(Pivot pivot) {
         return (pivot.getRow() + SEQUENCE_LENGTH) < size;
     }
 
@@ -57,7 +57,7 @@ public class DnaSequence {
      * @param pivot a point in the NxN matrix.
      * @return
      */
-    public int getSequencesOnArea(Point pivot) {
+    public int getSequencesOnArea(Pivot pivot) {
         int count = 0;
 
         // scan the two diagonals

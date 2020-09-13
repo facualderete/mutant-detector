@@ -98,4 +98,10 @@ public class DetectorControllerIntegrationTest {
                 arguments((Object) new String[]{"ATGA", "ATGA", "ATGA", "ATGF"})  // NxN with N >= 4 but invalid character F
         );
     }
+
+    /* Useful note:
+     * In case I ever need to flush all keys on Redis container after a test, the way to do it is:
+     * redisContainer.execInContainer("redis-cli", "FLUSHALL");
+     * This will execute the command FLUSHALL against the redis-cli tool inside the container.
+     */
 }
