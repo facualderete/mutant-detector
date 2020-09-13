@@ -33,7 +33,7 @@ public class DetectorController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = STATS_PATH)
-    @ApiOperation(value = "Statistics: get mutants and human counts, and mutants/humans ratio.")
+    @ApiOperation(value = "Statistics: get #mutant, #human and mutant/human ratio.")
     @ResponseBody
     public Stats getStats() {
         return statsService.getStats();

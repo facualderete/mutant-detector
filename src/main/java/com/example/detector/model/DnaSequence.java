@@ -51,9 +51,9 @@ public class DnaSequence {
     }
 
     /**
-     * Evaluates an area of 4x4 inside the NxN DNA Sequence matrix,
-     * where the pivot is the top-left point.
-     * Will evaluate both diagonals, all rows and all columns.
+     * Evaluates an area of 4x4 inside the NxN DNA Sequence matrix, where the pivot is the top-left point.
+     * Will evaluate both diagonals, all rows and all columns, but will return immediately if it finds 2 sequences,
+     * because this is the minimum amount needed to decide that a DNA belongs to a mutant.
      * @param pivot a point in the NxN matrix.
      * @return
      */
@@ -110,6 +110,12 @@ public class DnaSequence {
         return count;
     }
 
+    /**
+     * Validate that a string of characters contains only one type of character.
+     * Return immediately when finding the first difference.
+     * @param chars
+     * @return
+     */
     private boolean allSameChar(char... chars) {
         for (char aChar : chars) {
             if (chars[0] != aChar) {
@@ -119,6 +125,10 @@ public class DnaSequence {
         return true;
     }
 
+    /**
+     * This is used just to convert the String[] into a String for hashing.
+     * @return all members of the String[] concatenated and separated by ','.
+     */
     @Override
     public String toString() {
         return Strings.join(Arrays.asList(dna), ',');
