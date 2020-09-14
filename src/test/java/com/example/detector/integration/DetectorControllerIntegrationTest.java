@@ -75,14 +75,14 @@ public class DetectorControllerIntegrationTest {
      */
     static Stream<Arguments> dnaAndExpectationsProvider() {
         return Stream.of(
-            arguments(new String[]{"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"}, HttpStatus.OK, true, 1, 100.0),
-            arguments(new String[]{"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"}, HttpStatus.OK, true, 1, 100.0),
-            arguments(new String[]{"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTA"}, HttpStatus.OK, true, 2, 100.0),
-            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTG"}, HttpStatus.FORBIDDEN, false, 1, 200.0),
-            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTG"}, HttpStatus.FORBIDDEN, false, 1, 200.0),
-            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTA"}, HttpStatus.FORBIDDEN, false, 2, 100.0),
-            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTC"}, HttpStatus.FORBIDDEN, false, 3, 66.67),
-            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGT","GCGTCA","TCACTC"}, HttpStatus.FORBIDDEN, false, 4, 50.0)
+            arguments(new String[]{"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"}, HttpStatus.OK, true, 1, 1.0),
+            arguments(new String[]{"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"}, HttpStatus.OK, true, 1, 1.0),
+            arguments(new String[]{"ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTA"}, HttpStatus.OK, true, 2, 1.0),
+            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTG"}, HttpStatus.FORBIDDEN, false, 1, 2.0),
+            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTG"}, HttpStatus.FORBIDDEN, false, 1, 2.0),
+            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTA"}, HttpStatus.FORBIDDEN, false, 2, 1.0),
+            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTC"}, HttpStatus.FORBIDDEN, false, 3, 0.67),
+            arguments(new String[]{"ATGCGA","CAGTGC","TTATTT","AGACGT","GCGTCA","TCACTC"}, HttpStatus.FORBIDDEN, false, 4, 0.5)
         );
     }
 
