@@ -45,7 +45,7 @@ keys *
    * See mutant-count and human-count
 ```
 get mutant-count
-get mutant-count
+get human-count
 ```
    * See all evaluations
 ```
@@ -73,7 +73,7 @@ heroku git:remote -a mutant-detector-api
 ```
 git push heroku master
 ```
-This app is also ready to be deployed on any environment. You just need a Redis server and set following environment variables to the app:
+This app is also ready to be deployed on any environment. You just need a Redis server and set the following environment variables to the app:
 * REDISCLOUD_URL: URL to Redis server.
 * REDISCLOUD_PASSWORD: password to Redis server.
 
