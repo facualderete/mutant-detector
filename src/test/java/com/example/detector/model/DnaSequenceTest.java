@@ -1,11 +1,19 @@
 package com.example.detector.model;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.redisson.misc.Hash;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 @ExtendWith(SpringExtension.class)
 public class DnaSequenceTest {
@@ -42,98 +50,89 @@ public class DnaSequenceTest {
         assertThat(dnaSequence.canGoDown(goDown), is(false));
     }
 
-    @Test
-    public void testDiagonals() {
+    @ParameterizedTest
+    @MethodSource("dnaProvider")
+    public void testFindChains(String[] dna) {
+        Set<String> chains = new HashSet<>();
+        DnaSequence dnaSequence = new DnaSequence(dna);
+        dnaSequence.getSequencesOnArea(upperLeft, chains);
+        assertThat(chains.size(), is(1));
+    }
+
+    static Stream<Arguments> dnaProvider() {
         String[] dnaFirstDiagonal = {
-                "ATTC",
-                "TATT",
-                "TTAT",
-                "CTTA"
+            "ATTC",
+            "TATT",
+            "TTAT",
+            "CTTA"
         };
         String[] dnaSecondDiagonal = {
-                "CTTA",
-                "TTAT",
-                "TATT",
-                "ATTC"
+            "CTTA",
+            "TTAT",
+            "TATT",
+            "ATTC"
         };
-
-        DnaSequence dnaSequenceFirstDiagonal = new DnaSequence(dnaFirstDiagonal);
-        DnaSequence dnaSequenceSecondDiagonal = new DnaSequence(dnaSecondDiagonal);
-        assertThat(dnaSequenceFirstDiagonal.getSequencesOnArea(upperLeft), is(1));
-        assertThat(dnaSequenceSecondDiagonal.getSequencesOnArea(upperLeft), is(1));
-    }
-
-    @Test
-    public void testRows() {
         String[] dnaFirstRow = {
-                "AAAA",
-                "TCTC",
-                "CTCT",
-                "TCTC"
+            "AAAA",
+            "TCTC",
+            "CTCT",
+            "TCTC"
         };
         String[] dnaSecondRow = {
-                "TCTC",
-                "AAAA",
-                "TCTC",
-                "CTCT"
+            "TCTC",
+            "AAAA",
+            "TCTC",
+            "CTCT"
         };
         String[] dnaThirdRow = {
-                "TCTC",
-                "CTCT",
-                "AAAA",
-                "TCTC"
+            "TCTC",
+            "CTCT",
+            "AAAA",
+            "TCTC"
         };
         String[] dnaFourthRow = {
-                "TCTC",
-                "CTCT",
-                "TCTC",
-                "AAAA"
+            "TCTC",
+            "CTCT",
+            "TCTC",
+            "AAAA"
         };
-
-        DnaSequence dnaSequenceFirstRow = new DnaSequence(dnaFirstRow);
-        DnaSequence dnaSequenceSecondRow = new DnaSequence(dnaSecondRow);
-        DnaSequence dnaSequenceThirdRow = new DnaSequence(dnaThirdRow);
-        DnaSequence dnaSequenceFourthRow = new DnaSequence(dnaFourthRow);
-        assertThat(dnaSequenceFirstRow.getSequencesOnArea(upperLeft), is(1));
-        assertThat(dnaSequenceSecondRow.getSequencesOnArea(upperLeft), is(1));
-        assertThat(dnaSequenceThirdRow.getSequencesOnArea(upperLeft), is(1));
-        assertThat(dnaSequenceFourthRow.getSequencesOnArea(upperLeft), is(1));
-    }
-
-    @Test
-    public void testCols() {
         String[] dnaFirstCol = {
-                "ATCT",
-                "ACTC",
-                "ATCT",
-                "ACTC"
+            "ATCT",
+            "ACTC",
+            "ATCT",
+            "ACTC"
         };
         String[] dnaSecondCol = {
-                "TATC",
-                "CACT",
-                "TATC",
-                "CACT"
+            "TATC",
+            "CACT",
+            "TATC",
+            "CACT"
         };
         String[] dnaThirdCol = {
-                "TCAC",
-                "CTAT",
-                "TCAC",
-                "CTAT"
+            "TCAC",
+            "CTAT",
+            "TCAC",
+            "CTAT"
         };
         String[] dnaFourthCol = {
-                "TCTA",
-                "CTCA",
-                "TCTA",
-                "CTCA"
+            "TCTA",
+            "CTCA",
+            "TCTA",
+            "CTCA"
         };
 
-        DnaSequence dnaSequenceFirstCol = new DnaSequence(dnaFirstCol);
-        DnaSequence dnaSequenceSecondCol = new DnaSequence(dnaSecondCol);
-        DnaSequence dnaSequenceThirdCol = new DnaSequence(dnaThirdCol);
-        DnaSequence dnaSequenceFourthCol = new DnaSequence(dnaFourthCol);
-        assertThat(dnaSequenceFirstCol.getSequencesOnArea(upperLeft), is(1));
-        assertThat(dnaSequenceSecondCol.getSequencesOnArea(upperLeft), is(1));
-        assertThat(dnaSequenceThirdCol.getSequencesOnArea(upperLeft), is(1));
-        assertThat(dnaSequenceFourthCol.getSequencesOnArea(upperLeft), is(1));
+        return Stream.of(
+            arguments((Object) dnaFirstDiagonal),
+            arguments((Object) dnaSecondDiagonal),
+            arguments((Object) dnaFirstCol),
+            arguments((Object) dnaSecondCol),
+            arguments((Object) dnaThirdCol),
+            arguments((Object) dnaFourthCol),
+            arguments((Object) dnaFirstRow),
+            arguments((Object) dnaSecondRow),
+            arguments((Object) dnaThirdRow),
+            arguments((Object) dnaFourthRow)
+        );
     }
+
 }

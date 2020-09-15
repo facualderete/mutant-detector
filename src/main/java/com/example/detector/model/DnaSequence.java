@@ -1,6 +1,7 @@
 package com.example.detector.model;
 
 import java.util.Arrays;
+import java.util.Set;
 import org.apache.logging.log4j.util.Strings;
 
 public class DnaSequence {
@@ -57,8 +58,8 @@ public class DnaSequence {
      * @param pivot a point in the NxN matrix.
      * @return
      */
-    public int getSequencesOnArea(Pivot pivot) {
-        int count = 0;
+    public void getSequencesOnArea(Pivot pivot, Set<String> chains) {
+//        int count = 0;
 
         // scan the two diagonals
         if (allSameChar(
@@ -66,17 +67,19 @@ public class DnaSequence {
                 getCharAt(pivot.getRow() + 1, pivot.getCol() + 1),
                 getCharAt(pivot.getRow() + 2, pivot.getCol() + 2),
                 getCharAt(pivot.getRow() + 3, pivot.getCol() + 3))) {
-            count++;
+            String chainId = String.format("FIRST_DIAGONAL_%d_%d", pivot.getRow(), pivot.getCol());
+            chains.add(chainId);
         }
         if (allSameChar(
                 getCharAt(pivot.getRow() + 3, pivot.getCol()),
                 getCharAt(pivot.getRow() + 2, pivot.getCol() + 1),
                 getCharAt(pivot.getRow() + 1, pivot.getCol() + 2),
                 getCharAt(pivot.getRow(), pivot.getCol() + 3))) {
-            count++;
+            String chainId = String.format("SECOND_DIAGONAL_%d_%d", pivot.getRow(), pivot.getCol());
+            chains.add(chainId);
         }
-        if (count >= 2) {
-            return count;
+        if (chains.size() >= 2) {
+            return;
         }
 
         // scan rows
@@ -86,10 +89,11 @@ public class DnaSequence {
                     getCharAt(i, pivot.getCol() + 1),
                     getCharAt(i, pivot.getCol() + 2),
                     getCharAt(i, pivot.getCol() + 3))) {
-                count++;
+                String chainId = String.format("ROW_%d_%d", i, pivot.getCol());
+                chains.add(chainId);
             }
-            if (count >= 2) {
-                return count;
+            if (chains.size() >= 2) {
+                return;
             }
         }
 
@@ -100,14 +104,13 @@ public class DnaSequence {
                     getCharAt(pivot.getRow() + 1, i),
                     getCharAt(pivot.getRow() + 2, i),
                     getCharAt(pivot.getRow() + 3, i))) {
-                count++;
+                String chainId = String.format("COL_%d_%d", pivot.getRow(), i);
+                chains.add(chainId);
             }
-            if (count >= 2) {
-                return count;
+            if (chains.size() >= 2) {
+                return;
             }
         }
-
-        return count;
     }
 
     /**

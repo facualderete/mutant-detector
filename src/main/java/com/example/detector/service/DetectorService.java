@@ -45,12 +45,15 @@ public class DetectorService {
      */
     private boolean evaluate(DnaSequence dnaSequence) {
         Set<Pivot> visited = new HashSet<>();
+        Set<String> chains = new HashSet<>();
         Pivot startingPoint = Pivot.builder()
             .row(0)
             .col(0)
             .build();
 
-        return evaluatePivot(dnaSequence, visited, startingPoint, 0) >= 2;
+        evaluatePivot(dnaSequence, visited, startingPoint, chains);
+
+        return chains.size() >= 2;
     }
 
     /**
@@ -66,18 +69,18 @@ public class DetectorService {
      * @param dnaSequence
      * @param visited
      * @param pivot
-     * @param count
+     * @param chains
      * @return
      */
-    private int evaluatePivot(DnaSequence dnaSequence, Set<Pivot> visited, Pivot pivot, int count) {
-        count += dnaSequence.getSequencesOnArea(pivot);
+    private void evaluatePivot(DnaSequence dnaSequence, Set<Pivot> visited, Pivot pivot, Set<String> chains) {
+        dnaSequence.getSequencesOnArea(pivot, chains);
 
         // when going right and down from multiple pivots, some might have already been visited.
         // verify in order to prevent this from happening.
         visited.add(pivot);
 
-        if (count >= 2) {
-            return count;
+        if (chains.size() >= 2) {
+            return;
         }
 
         // explore next pivot to my right
@@ -86,9 +89,9 @@ public class DetectorService {
                 .col(pivot.getCol() + 1)
                 .build();
         if (dnaSequence.canGoRight(pivot) && !visited.contains(goRight)) {
-            count += evaluatePivot(dnaSequence, visited, goRight, count);
-            if (count >= 2) {
-                return count;
+            evaluatePivot(dnaSequence, visited, goRight, chains);
+            if (chains.size() >= 2) {
+                return;
             }
         }
 
@@ -98,12 +101,7 @@ public class DetectorService {
                 .col(pivot.getCol())
                 .build();
         if (dnaSequence.canGoDown(pivot) && !visited.contains(goDown)) {
-            count += evaluatePivot(dnaSequence, visited, goDown, count);
-            if (count >= 2) {
-                return count;
-            }
+            evaluatePivot(dnaSequence, visited, goDown, chains);
         }
-
-        return count;
     }
 }
